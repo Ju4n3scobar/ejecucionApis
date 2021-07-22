@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ConsultBookRequest;
+use App\Http\Requests\CreateBookRequest;
+use App\Models\Books;
 use Illuminate\Http\Request;
 
 class CrudBooksAPI extends Controller
@@ -22,9 +25,13 @@ class CrudBooksAPI extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateBookRequest $request)
     {
-        //
+        Books::create($request->all());
+        return response()->json([
+            'resp'=>true,
+            'message'=>'Libro registrado correctamente',
+        ]);
     }
 
     /**
@@ -33,9 +40,16 @@ class CrudBooksAPI extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $books = new Books();
+        return $books->get();
+    }
+
+    public function showC(ConsultBookRequest $request)
+    {
+        $books = Books::where('id', $request->id);
+        return $books->get();
     }
 
     /**
@@ -45,9 +59,11 @@ class CrudBooksAPI extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ConsultBookRequest $request)
     {
-        //
+        Books::where('id', $request->id)->update($request->all());
+        $books = new Books();
+        return $books->get();
     }
 
     /**
@@ -58,6 +74,6 @@ class CrudBooksAPI extends Controller
      */
     public function destroy($id)
     {
-        //
+        
     }
 }

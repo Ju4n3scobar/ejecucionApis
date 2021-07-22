@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CrudBooksAPI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('store', [CrudBooksAPI::class, 'store'])->name('insertBooks');
+Route::get('show', [CrudBooksAPI::class, 'show'])->name('listBooks');
+Route::post('showC', [CrudBooksAPI::class, 'showC'])->name('consultBooks');
+Route::post('update', [CrudBooksAPI::class, 'update'])->name('updateBooks');
